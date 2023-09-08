@@ -5,14 +5,21 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix"
+    "lint:fix": "eslint src --ext .ts --fix",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.5.9",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.34.4"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1"
   }
 }
