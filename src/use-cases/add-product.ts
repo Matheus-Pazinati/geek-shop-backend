@@ -1,3 +1,4 @@
+import { ProductsRepository } from "@/database/repositories/products-repository"
 import { randomUUID } from "crypto"
 
 interface AddProductUseCaseRequest {
@@ -9,7 +10,7 @@ interface AddProductUseCaseRequest {
 }
 
 export class AddProductUseCase {
-  constructor(private productsRepository: any) {}
+  constructor(private productsRepository: ProductsRepository) {}
 
   async execute({
     name,
