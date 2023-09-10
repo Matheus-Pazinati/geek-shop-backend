@@ -27,4 +27,12 @@ export class InMemoryProductsRepository implements ProductsRepository {
 
     this.products.splice(productToRemoveIndex, 1) 
   }
+
+  async save(product: Product) {
+    const productIndex = this.products.findIndex((item) => {
+      return item.id === product.id
+    })
+
+    this.products[productIndex] = product
+  }
 }
