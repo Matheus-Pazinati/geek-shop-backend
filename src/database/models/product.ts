@@ -3,6 +3,6 @@ export interface Product {
   name: string
   description: string
   price: number
-  category: 'starwars' | 'consoles' | 'generics',
+  category: 'starwars' | 'consoles' | 'generics'
   imageUrl: string
 }

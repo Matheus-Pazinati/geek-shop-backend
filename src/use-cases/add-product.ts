@@ -1,11 +1,11 @@
-import { ProductsRepository } from "@/database/repositories/products-repository"
-import { randomUUID } from "crypto"
+import { ProductsRepository } from '@/database/repositories/products-repository'
+import { randomUUID } from 'crypto'
 
 interface AddProductUseCaseRequest {
   name: string
   description: string
   price: number
-  category: 'starwars' | 'consoles' | 'generics',
+  category: 'starwars' | 'consoles' | 'generics'
   imageUrl: string
 }
 
@@ -17,7 +17,7 @@ export class AddProductUseCase {
     description,
     category,
     price,
-    imageUrl
+    imageUrl,
   }: AddProductUseCaseRequest) {
     const productId = randomUUID()
 
@@ -27,7 +27,7 @@ export class AddProductUseCase {
       description,
       category,
       price,
-      imageUrl
+      imageUrl,
     })
   }
 }

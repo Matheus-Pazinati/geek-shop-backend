@@ -1,4 +1,4 @@
-import { ProductsRepository } from "@/database/repositories/products-repository";
+import { ProductsRepository } from '@/database/repositories/products-repository'
 
 interface DeleteProductUseCaseRequest {
   productId: string
@@ -7,13 +7,11 @@ interface DeleteProductUseCaseRequest {
 export class DeleteProductUseCase {
   constructor(private productsRepository: ProductsRepository) {}
 
-  async execute({
-    productId
-  }: DeleteProductUseCaseRequest) {
-    const product = await this.productsRepository.findById(productId) 
+  async execute({ productId }: DeleteProductUseCaseRequest) {
+    const product = await this.productsRepository.findById(productId)
 
     if (!product) {
-      throw new Error("Product not found.")
+      throw new Error('Product not found.')
     }
 
     await this.productsRepository.delete(product)
