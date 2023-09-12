@@ -35,4 +35,12 @@ export class InMemoryProductsRepository implements ProductsRepository {
 
     this.products[productIndex] = product
   }
+
+  async fetchByCategory(category: "starwars" | "consoles" | "generics") {
+    const products = this.products.filter((product) => {
+      return product.category === category
+    })
+
+    return products
+  }
 }
