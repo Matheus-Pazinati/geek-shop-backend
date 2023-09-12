@@ -1,5 +1,6 @@
 import { Product } from '@/database/models/product'
 import { ProductsRepository } from '@/database/repositories/products-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface EditProductUseCaseRequest {
   newProductData: Product
@@ -12,7 +13,7 @@ export class EditProductUseCase {
     const product = await this.productsRepository.findById(newProductData.id)
 
     if (!product) {
-      throw new Error('Product not found.')
+      throw new ResourceNotFoundError()
     }
 
     await this.productsRepository.save(newProductData)

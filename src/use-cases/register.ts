@@ -2,6 +2,7 @@ import { User } from '@/database/models/user'
 import { UsersRepository } from '@/database/repositories/users-repository'
 import { hash } from 'bcrypt'
 import { randomUUID } from 'node:crypto'
+import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
 interface RegisterUseCaseRequest {
   name: string
@@ -16,7 +17,7 @@ export class RegisterUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (user) {
-      throw new Error('E-mail já cadastrado.')
+      throw new EmailAlreadyRegisteredError()
     }
 
     const saltRounds = 6

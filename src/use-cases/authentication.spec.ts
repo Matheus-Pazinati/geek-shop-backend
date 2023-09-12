@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test } from 'vitest'
 import { AuthenticationUseCase } from './authentication'
 import { makeUser } from 'test/factories/make-user'
 import { hash } from 'bcrypt'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 describe('User Authentication Test', () => {
   let inMemoryUsersRepository: InMemoryUsersRepository
@@ -44,7 +45,7 @@ describe('User Authentication Test', () => {
         email: 'wrongemail@example.com',
         password: '123456',
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 
   test('it should not be able to authenticate a user with wrong password', async () => {
@@ -61,6 +62,6 @@ describe('User Authentication Test', () => {
         email: 'user@example.com',
         password: 'wrongpassword',
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 })

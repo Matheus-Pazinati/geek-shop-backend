@@ -2,6 +2,7 @@ import { InMemoryProductsRepository } from "test/repositories/in-memory-products
 import { beforeEach, describe, expect, test } from "vitest";
 import { GetProductUseCase } from "./get-product";
 import { makeProduct } from "test/factories/make-product";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 describe("Get the product Test", () => {
   let inMemoryProductsRepository: InMemoryProductsRepository
@@ -34,6 +35,6 @@ describe("Get the product Test", () => {
       await getProduct.execute({
         id: 'nonexistent-product'
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

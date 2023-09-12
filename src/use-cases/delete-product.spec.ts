@@ -2,6 +2,7 @@ import { InMemoryProductsRepository } from 'test/repositories/in-memory-products
 import { beforeEach, describe, expect, test } from 'vitest'
 import { DeleteProductUseCase } from './delete-product'
 import { makeProduct } from 'test/factories/make-product'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Delete a Product Test', () => {
   let inMemoryProductsRepository: InMemoryProductsRepository
@@ -31,6 +32,6 @@ describe('Delete a Product Test', () => {
       await deleteProduct.execute({
         productId: 'nonexistent-product-id',
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

@@ -1,6 +1,7 @@
 import { User } from '@/database/models/user'
 import { UsersRepository } from '@/database/repositories/users-repository'
 import { compare } from 'bcrypt'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 interface AuthenticationUseCaseRequest {
   email: string
@@ -21,13 +22,13 @@ export class AuthenticationUseCase {
     const user = await this.usersRepository.findByEmail(email)
 
     if (!user) {
-      throw new Error('Email or password incorrect')
+      throw new InvalidCredentialsError()
     }
 
     const doesPasswordMatches = await compare(password, user.password)
 
     if (!doesPasswordMatches) {
-      throw new Error('Email or password incorrect')
+      throw new InvalidCredentialsError()
     }
 
     return {

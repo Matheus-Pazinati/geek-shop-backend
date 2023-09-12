@@ -2,6 +2,7 @@ import { InMemoryProductsRepository } from 'test/repositories/in-memory-products
 import { beforeEach, describe, expect, test } from 'vitest'
 import { EditProductUseCase } from './edit-product'
 import { makeProduct } from 'test/factories/make-product'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 describe('Edit a Product Test', () => {
   let inMemoryProductsRepository: InMemoryProductsRepository
@@ -45,6 +46,6 @@ describe('Edit a Product Test', () => {
           imageUrl: 'fake-url',
         },
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

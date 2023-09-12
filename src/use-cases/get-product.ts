@@ -1,5 +1,6 @@
 import { Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 
 interface GetProductUseCaseRequest {
   id: string
@@ -18,7 +19,7 @@ export class GetProductUseCase {
     const product = await this.productsRepository.findById(id)
 
     if (!product) {
-      throw new Error("Product not found.")
+      throw new ResourceNotFoundError()
     }
 
     return {

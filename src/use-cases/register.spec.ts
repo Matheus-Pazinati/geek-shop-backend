@@ -2,6 +2,7 @@ import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repos
 import { describe, expect, test, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
 import { makeUser } from 'test/factories/make-user'
+import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
 describe('Create User Test', () => {
   let inMemoryUsersRepository: InMemoryUsersRepository
@@ -43,6 +44,6 @@ describe('Create User Test', () => {
         name: 'John Doe',
         password: '123456',
       })
-    }).rejects.toBeInstanceOf(Error)
+    }).rejects.toBeInstanceOf(EmailAlreadyRegisteredError)
   })
 })
