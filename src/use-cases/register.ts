@@ -1,7 +1,6 @@
 import { User } from '@/database/models/user'
 import { UsersRepository } from '@/database/repositories/users-repository'
 import { hash } from 'bcrypt'
-import { randomUUID } from 'node:crypto'
 import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
 
 interface RegisterUseCaseRequest {
@@ -23,10 +22,7 @@ export class RegisterUseCase {
     const saltRounds = 6
     const passwordHash = await hash(password, saltRounds)
 
-    const userId = randomUUID()
-
     const newUser: User = {
-      id: userId,
       name,
       email,
       password: passwordHash,

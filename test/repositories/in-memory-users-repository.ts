@@ -1,5 +1,6 @@
 import { User } from "@/database/models/user";
 import { UsersRepository } from "@/database/repositories/users-repository";
+import { randomUUID } from "node:crypto";
 
 export class InMemoryUsersRepository implements UsersRepository {
   public users: User[] = []
@@ -17,7 +18,12 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async create(user: User) {
-    this.users.push(user)
+    const id = randomUUID()
+    const newUser: User = {
+      ...user,
+      id
+    }
+    this.users.push(newUser)
   }
   
 }

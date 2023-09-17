@@ -1,7 +1,6 @@
 import express from 'express'
+import { createUser } from './controllers/create-user'
 
 export const usersRouter = express.Router()
 
-usersRouter.get('/users', (req, res) => {
-  return res.json({ reply: "First Route!" })
-})
+usersRouter.post('/users', createUser)

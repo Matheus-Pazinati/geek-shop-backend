@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  gympass-pg:
+  postgresql:
     image: bitnami/postgresql
     ports:
       - 5432:5432

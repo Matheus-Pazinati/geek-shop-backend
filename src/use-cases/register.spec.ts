@@ -3,6 +3,7 @@ import { describe, expect, test, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
 import { makeUser } from 'test/factories/make-user'
 import { EmailAlreadyRegisteredError } from './errors/email-already-registered-error'
+import { Hash } from 'node:crypto'
 
 describe('Create User Test', () => {
   let inMemoryUsersRepository: InMemoryUsersRepository
@@ -21,14 +22,12 @@ describe('Create User Test', () => {
     })
 
     expect(inMemoryUsersRepository.users).toHaveLength(1)
-    expect(inMemoryUsersRepository.users[0]).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-        password: expect.any(String),
-      }),
-    )
+    expect(inMemoryUsersRepository.users[0]).toEqual({
+      name: "John Doe",
+      email: "johndoe@example.com",
+      password: expect.any(String),
+      id: expect.any(String)
+    })
   })
 
   test('it should not be able to create a user with email already registered', async () => {
