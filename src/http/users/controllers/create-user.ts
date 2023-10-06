@@ -2,7 +2,6 @@ import { UserPostgresqlRepository } from "@/database/repositories/postgresql/use
 import { EmailAlreadyRegisteredError } from "@/use-cases/errors/email-already-registered-error";
 import { RegisterUseCase } from "@/use-cases/register";
 import { Request, Response } from "express";
-import { send } from "process";
 import { ZodError, z } from 'zod'
 
 export async function createUser(request: Request, response: Response) {
@@ -18,7 +17,6 @@ export async function createUser(request: Request, response: Response) {
   })
 
   try {
-
     const { name, email, password } = userRequestSchema.parse(request.body)
     const usersRepository = new UserPostgresqlRepository()
 
