@@ -1,5 +1,5 @@
 import { dropTestSchema, setupTestSchema } from "test/factories/create-db-schema";
-import { afterAll, beforeAll, describe, test } from "vitest";
+import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import request from "supertest"
 import { app } from "@/app";
 
@@ -22,13 +22,15 @@ describe("Authenticate User Test E2E", () => {
       passwordConfirm: "12345678"
     })
 
-    await request(app)
+    const token = await request(app)
     .post('/authentication')
     .send({
       email: "matheus@example.com",
       password: "12345678"
     })
     .expect(200)
+
+    expect(token.text).toEqual(expect.any(String))
   })
 
   test("it should not be able to authenticate a nonexistent user", async() => {
