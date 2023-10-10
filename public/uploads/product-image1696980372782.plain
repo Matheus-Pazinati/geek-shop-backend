@@ -1,0 +1,9 @@
+alice - 0
+bob - 1
+charlie - 2
+pedro - 3
+
+locked[0][1] = false
+locked[2][0] = false
+locked[1][3] = false
+locked[3][2] = false
