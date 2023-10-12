@@ -1,4 +1,5 @@
 import { ProductsPostgresqlRepository } from "@/database/repositories/postgresql/products-postgresql-repository";
+import { convertRealToCents } from "@/http/utils/convert-real-to-cents";
 import { AddProductUseCase } from "@/use-cases/add-product";
 import { Request, Response } from "express";
 import { ZodError, z } from "zod";
@@ -11,17 +12,31 @@ export async function addProduct(request: Request, response: Response) {
     category: z.enum(["starwars", "consoles", "generics"]),
   })
 
-  const isFileAImage = request.file?.mimetype.split('/')[0] == "image"
-
-  if (!isFileAImage) {
-    return response.status(400).send({
-      message: "Invalid file type."
-    })
-  }
-
   const { name, price, description, category } = productSchema.parse(request.body)
+
+  const priceInCents = convertRealToCents(price)
 
   const imageUrl = `http://localhost:3000/uploads/${request.file?.filename}`
 
-  console.log(request.file)
+  try {
+    const productsRepository = new ProductsPostgresqlRepository()
+    const createProduct = new AddProductUseCase(productsRepository)
+
+    await createProduct.execute({
+      name,
+      price: priceInCents,
+      category,
+      description,
+      imageUrl
+    })
+
+    return response.status(201).send()
+
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return response.status(400).send({
+        message: error.message
+      })
+    }
+  }
 }
