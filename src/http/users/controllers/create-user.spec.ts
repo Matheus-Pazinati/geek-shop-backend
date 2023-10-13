@@ -5,11 +5,11 @@ import { afterAll, beforeAll, describe, test } from 'vitest'
 
 describe("Create user E2E test", () => {
   beforeAll(async () => {
-    await setupTestSchema()
+    await setupTestSchema('users')
   })
 
   afterAll(async () => {
-    await dropTestSchema()
+    await dropTestSchema('users')
   })
 
   test("it should be able to create a user", async() => {

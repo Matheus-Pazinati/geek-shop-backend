@@ -5,11 +5,11 @@ import { app } from "app"
 
 describe("Authenticate User Test E2E", () => {
   beforeAll(async () => {
-    await setupTestSchema()
+    await setupTestSchema('users')
   })
 
   afterAll(async () => {
-    await dropTestSchema()
+    await dropTestSchema('users')
   })
 
   test("it should be able to authenticate a user", async() => {
