@@ -16,7 +16,7 @@ export async function addProduct(request: Request, response: Response) {
 
   const priceInCents = convertRealToCents(price)
 
-  const imageUrl = `http://localhost:3000/uploads/${request.file?.filename}`
+  const imageUrl = response.locals.image
 
   try {
     const productsRepository = new ProductsPostgresqlRepository()
