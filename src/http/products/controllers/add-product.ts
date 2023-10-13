@@ -12,13 +12,13 @@ export async function addProduct(request: Request, response: Response) {
     category: z.enum(["starwars", "consoles", "generics"]),
   })
 
-  const { name, price, description, category } = productSchema.parse(request.body)
-
-  const priceInCents = convertRealToCents(price)
-
-  const imageUrl = response.locals.image
-
   try {
+    const { name, price, description, category } = productSchema.parse(request.body)
+
+    const priceInCents = convertRealToCents(price)
+  
+    const imageUrl = response.locals.image
+    
     const productsRepository = new ProductsPostgresqlRepository()
     const createProduct = new AddProductUseCase(productsRepository)
 

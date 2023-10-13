@@ -51,4 +51,15 @@ describe("Add Products E2E tests", () => {
     .expect(201)
   })
 
+  test("it should not be able to create a product without any data", async() => {
+    await request(app)
+    .post('/products/add')
+    .send({
+      description: "Lorem ipsum test",
+      price: "42",
+      category: "consoles"
+    })
+    .expect(400)
+  })
+
 })
