@@ -7,4 +7,5 @@ export interface Product {
   price: number
   category: 'starwars' | 'consoles' | 'generics'
   imageUrl: string
+  ownerId: UUID
 }

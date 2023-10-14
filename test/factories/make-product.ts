@@ -9,6 +9,7 @@ export async function makeProduct(override: Partial<Product> = {}) {
     category: 'generics',
     imageUrl: 'http://example.com',
     price: 10,
+    ownerId: randomUUID(),
     ...override
   }
 

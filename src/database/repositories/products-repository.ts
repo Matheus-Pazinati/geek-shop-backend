@@ -1,3 +1,4 @@
+import { UUID } from 'node:crypto'
 import { Product } from '../models/product'
 
 export interface ProductsRepository {
@@ -6,4 +7,5 @@ export interface ProductsRepository {
   delete(product: Product): Promise<void>
   save(product: Product): Promise<void>
   fetchByCategory(category: 'starwars' | 'consoles' | 'generics'): Promise<Product[]>
+  verifyProductOwner(productId: UUID, ownerId: UUID): Promise<boolean>
 }

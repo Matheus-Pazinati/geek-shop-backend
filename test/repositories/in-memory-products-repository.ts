@@ -1,12 +1,13 @@
 import { Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
+import { UUID, randomUUID } from "node:crypto";
 
 export class InMemoryProductsRepository implements ProductsRepository {
   public products: Product[] = []
 
-  async findById(id: string) {
+  async findById(id: UUID) {
     const product = this.products.find((product) => {
-      return product.id === id
+      return product.id == id
     })
 
     if (!product) {
@@ -17,7 +18,14 @@ export class InMemoryProductsRepository implements ProductsRepository {
   }
 
   async create(product: Product) {
-    this.products.push(product)
+    if (!product.id) {
+      this.products.push({
+        ...product,
+        id: randomUUID()
+      })
+    } else {
+      this.products.push(product)
+    }
   }
 
   async delete(product: Product) {
@@ -42,5 +50,15 @@ export class InMemoryProductsRepository implements ProductsRepository {
     })
 
     return products
+  }
+
+  async verifyProductOwner(productId: UUID, ownerId: UUID) {
+    const product = await this.findById(productId)
+
+    if (product?.ownerId == ownerId) {
+      return true
+    }
+
+    return false
   }
 }

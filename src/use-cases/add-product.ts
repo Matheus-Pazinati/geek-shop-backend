@@ -1,5 +1,5 @@
 import { ProductsRepository } from '@/database/repositories/products-repository'
-import { randomUUID } from 'crypto'
+import { UUID, randomUUID } from 'crypto'
 
 interface AddProductUseCaseRequest {
   name: string
@@ -7,6 +7,7 @@ interface AddProductUseCaseRequest {
   price: number
   category: 'starwars' | 'consoles' | 'generics'
   imageUrl: string
+  ownerId: UUID
 }
 
 export class AddProductUseCase {
@@ -18,16 +19,16 @@ export class AddProductUseCase {
     category,
     price,
     imageUrl,
+    ownerId
   }: AddProductUseCaseRequest) {
-    const productId = randomUUID()
 
     await this.productsRepository.create({
-      id: productId,
       name,
       description,
       category,
       price,
       imageUrl,
+      ownerId
     })
   }
 }

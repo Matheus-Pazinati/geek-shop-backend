@@ -18,6 +18,7 @@ describe('Add Product Test', () => {
       category: 'generics',
       imageUrl: 'http://example.com',
       price: 12.99,
+      ownerId: "6801dfcc-6aa3-11ee-8c99-0242ac120002"
     })
 
     expect(inMemoryProductsRepository.products).toHaveLength(1)

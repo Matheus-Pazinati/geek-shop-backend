@@ -21,7 +21,8 @@ describe("Get a product E2E Test", () => {
       category: "starwars",
       description: "Product description",
       imageUrl: "fakeImage.jpeg",
-      price: 15
+      price: 15,
+      ownerId: "de728adb-624a-4d10-b4b7-cd37ef4efc1d"
     })
 
     const products = await sql`

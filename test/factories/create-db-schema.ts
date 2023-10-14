@@ -10,7 +10,7 @@ export async function setupTestSchema(table: 'users' | 'products') {
   } else {
     await sql`
       CREATE TABLE
-       Products (id uuid DEFAULT uuid_generate_v4 (), name VARCHAR(30) NOT NULL UNIQUE, description VARCHAR(60) NOT NULL, price INT NOT NULL, product_category category NOT NULL, image_url VARCHAR(120) NOT NULL, PRIMARY KEY(id))
+       Products (id uuid DEFAULT uuid_generate_v4 (), name VARCHAR(30) NOT NULL UNIQUE, description VARCHAR(60) NOT NULL, price INT NOT NULL, product_category category NOT NULL, image_url VARCHAR(120) NOT NULL, owner_id uuid REFERENCES Users(id), PRIMARY KEY(id))
     `
   }
 
@@ -19,11 +19,11 @@ export async function setupTestSchema(table: 'users' | 'products') {
 export async function dropTestSchema(table: 'users' | 'products') {
   if (table == 'users') {
     await sql`
-      DROP TABLE Users CASCADE
+      DROP TABLE IF EXISTS Users CASCADE
     `
   } else {
     await sql`
-      DROP TABLE Products CASCADE
+      DROP TABLE IF EXISTS Products CASCADE
   `
   }
 

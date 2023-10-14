@@ -1,10 +1,10 @@
 import { ProductsPostgresqlRepository } from "@/database/repositories/postgresql/products-postgresql-repository";
 import { convertRealToCents } from "@/http/utils/convert-real-to-cents";
 import { AddProductUseCase } from "@/use-cases/add-product";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { ZodError, z } from "zod";
 
-export async function addProduct(request: Request, response: Response) {
+export async function addProduct(request: any, response: Response) {
   const productSchema = z.object({
     name: z.string().nonempty().max(30, { message: "You have exceeded the field's character limit: 30" }),
     description: z.string().nonempty().max(60, { message: "You have exceeded the field's character limit: 60" }),
@@ -22,12 +22,15 @@ export async function addProduct(request: Request, response: Response) {
     const productsRepository = new ProductsPostgresqlRepository()
     const createProduct = new AddProductUseCase(productsRepository)
 
+    const ownerId = request.user.id
+
     await createProduct.execute({
       name,
       price: priceInCents,
       category,
       description,
-      imageUrl
+      imageUrl,
+      ownerId
     })
 
     return response.status(201).send()
