@@ -10,8 +10,19 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
        VALUES (${ product.name }, ${ product.description }, ${product.price}, ${ product.category }, ${ product.imageUrl })
     `
   }
-  findById(id: string): Promise<Product | null> {
-    throw new Error("Method not implemented.");
+  async findById(id: string) {
+    const products = await sql<Product[]>`
+      SELECT 
+        *
+      FROM Products
+      WHERE id = ${ id }
+    `
+
+    if (!products.length) {
+      return null
+    }
+
+    return products[0]
   }
   delete(product: Product): Promise<void> {
     throw new Error("Method not implemented.");
