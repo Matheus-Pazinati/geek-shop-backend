@@ -1,9 +1,20 @@
 import sql from "@/database/config-db";
-import { ProductsPostgresqlRepository } from "@/database/repositories/postgresql/products-postgresql-repository";
+import {Request, Response, NextFunction} from "express"
 import { setupTestSchema, dropTestSchema } from "test/factories/create-db-schema";
-import { afterAll, beforeAll, describe, expect, test } from "vitest";
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import request from 'supertest'
 import { app } from "app";
+
+function handleImagesUploadMock(request: Request, response: Response, next: NextFunction) {
+  response.locals.image = "test.jpeg"
+  next()
+}
+
+vi.mock('../../middlewares/multer-image-update.ts', () => {
+  return {
+    handleImagesUploadWithMulter: vi.fn().mockImplementation(handleImagesUploadMock)
+  }
+})
 
 describe("Get a product E2E Test", () => {
   beforeAll(async () => {
@@ -15,14 +26,30 @@ describe("Get a product E2E Test", () => {
   })
 
   test("it should be able to get a product", async () => {
-    const productsRepository = new ProductsPostgresqlRepository()
-    await productsRepository.create({
+    await request(app)
+    .post('/users')
+    .send({
+      name: "John Doe",
+      email: "john@example.com",
+      password: "12345678",
+      passwordConfirm: "12345678"
+    })
+
+    const token = await request(app)
+    .post('/authentication')
+    .send({
+      email: "john@example.com",
+      password: "12345678"
+    })
+
+    await request(app)
+    .post('/products/add')
+    .set('Authorization', `Bearer ${token.body}`)
+    .send({
       name: "New product",
-      category: "starwars",
-      description: "Product description",
-      imageUrl: "fakeImage.jpeg",
-      price: 15,
-      ownerId: "de728adb-624a-4d10-b4b7-cd37ef4efc1d"
+      description: "Lorem ipsum test",
+      price: "42",
+      category: "starwars"
     })
 
     const products = await sql`

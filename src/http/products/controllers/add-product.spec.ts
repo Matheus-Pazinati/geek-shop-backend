@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { afterAll, beforeAll, vi, test } from "vitest";
 import { afterEach, describe } from "node:test";
-import { dropTestSchema, setupTestSchema } from "test/factories/create-db-schema";
+import { setupTestSchema, dropTestSchema } from "test/factories/create-db-schema";
 import request from 'supertest'
 import { app } from "app";
 
@@ -10,19 +10,9 @@ function handleImagesUploadMock(request: Request, response: Response, next: Next
   next()
 }
 
-function validateJWTMock(request: Request, response: Response, next: NextFunction) {
-  next()
-}
-
 vi.mock('../../middlewares/multer-image-update.ts', () => {
   return {
     handleImagesUploadWithMulter: vi.fn().mockImplementation(handleImagesUploadMock)
-  }
-})
-
-vi.mock('../../middlewares/validate-jwt.ts', () => {
-  return {
-    validateJWT: vi.fn().mockImplementation(validateJWTMock)
   }
 })
 
@@ -41,7 +31,24 @@ describe("Add Products E2E tests", () => {
 
   test("it should be able to create a product", async() => {
     await request(app)
+    .post('/users')
+    .send({
+      name: "John Doe",
+      email: "john@example.com",
+      password: "12345678",
+      passwordConfirm: "12345678"
+    })
+
+    const token = await request(app)
+    .post('/authentication')
+    .send({
+      email: "john@example.com",
+      password: "12345678"
+    })
+
+    await request(app)
     .post('/products/add')
+    .set('Authorization', `Bearer ${token.body}`)
     .send({
       name: "Test Product",
       description: "Lorem ipsum test",
@@ -51,7 +58,7 @@ describe("Add Products E2E tests", () => {
     .expect(201)
   })
 
-  test("it should not be able to create a product without any data", async() => {
+  test("it should not be able to create a product without being authenticated", async() => {
     await request(app)
     .post('/products/add')
     .send({
@@ -59,7 +66,7 @@ describe("Add Products E2E tests", () => {
       price: "42",
       category: "consoles"
     })
-    .expect(400)
+    .expect(401)
   })
 
 })

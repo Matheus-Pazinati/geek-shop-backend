@@ -25,7 +25,7 @@ export async function authenticateUser(request: Request, response: Response) {
 
     if (id) {
       const accessToken = generateAcessToken({ id, name })
-      return response.status(200).send(accessToken)
+      return response.status(200).json(accessToken)
     }
   } catch (error) {
     if (error instanceof ZodError) {
