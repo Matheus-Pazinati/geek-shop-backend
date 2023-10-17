@@ -1,5 +1,6 @@
 import { ProductsRepository } from '@/database/repositories/products-repository'
 import { UUID, randomUUID } from 'crypto'
+import { NameAlreadyRegisteredError } from './errors/name-already-registered'
 
 interface AddProductUseCaseRequest {
   name: string
@@ -21,6 +22,12 @@ export class AddProductUseCase {
     imageUrl,
     ownerId
   }: AddProductUseCaseRequest) {
+
+    const productNameAlreadyExists = await this.productsRepository.findByName(name)
+
+    if (productNameAlreadyExists) {
+      throw new NameAlreadyRegisteredError()
+    }
 
     await this.productsRepository.create({
       name,
