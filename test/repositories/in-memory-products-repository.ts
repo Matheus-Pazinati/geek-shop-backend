@@ -1,6 +1,6 @@
 import { Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
-import { UUID, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
 
 export class InMemoryProductsRepository implements ProductsRepository {
   public products: Product[] = []
@@ -15,6 +15,10 @@ export class InMemoryProductsRepository implements ProductsRepository {
     }
 
     return product
+  }
+
+  async fetchAll() {
+    return this.products
   }
 
   async findByName(name: string) {
