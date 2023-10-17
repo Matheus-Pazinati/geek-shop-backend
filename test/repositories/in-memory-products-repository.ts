@@ -5,7 +5,7 @@ import { UUID, randomUUID } from "node:crypto";
 export class InMemoryProductsRepository implements ProductsRepository {
   public products: Product[] = []
 
-  async findById(id: UUID) {
+  async findById(id: string) {
     const product = this.products.find((product) => {
       return product.id == id
     })
@@ -52,7 +52,7 @@ export class InMemoryProductsRepository implements ProductsRepository {
     return products
   }
 
-  async verifyProductOwner(productId: UUID, ownerId: UUID) {
+  async verifyProductOwner(productId: string, ownerId: string) {
     const product = await this.findById(productId)
 
     if (product?.ownerId == ownerId) {

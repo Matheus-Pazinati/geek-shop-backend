@@ -25,8 +25,12 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
 
     return products[0]
   }
-  delete(product: Product): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(product: Product) {
+    await sql`
+      DELETE FROM 
+        Products
+          WHERE id = ${ product.id! }
+    `
   }
   save(product: Product): Promise<void> {
     throw new Error("Method not implemented.");
@@ -34,7 +38,13 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
   fetchByCategory(category: "starwars" | "consoles" | "generics"): Promise<Product[]> {
     throw new Error("Method not implemented.");
   }
-  verifyProductOwner(productId: UUID, ownerId: UUID): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async verifyProductOwner(productId: UUID, ownerId: UUID) {
+    const product: any = await this.findById(productId)
+    
+    if (product.owner_id == ownerId) {
+      return true;
+    }
+
+    return false;
   }
 }

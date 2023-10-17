@@ -4,7 +4,7 @@ import { UUID } from 'node:crypto'
 import { NotAllowedError } from './errors/not-allowed-error'
 
 interface DeleteProductUseCaseRequest {
-  productId: UUID
+  productId: string
   ownerId: UUID
 }
 

@@ -22,8 +22,6 @@ describe('Delete a Product Test', () => {
 
     inMemoryProductsRepository.create(product)
 
-    console.log(inMemoryProductsRepository.products[0])
-
     await deleteProduct.execute({
       productId: product.id!,
       ownerId: product.ownerId
