@@ -1,4 +1,5 @@
 import { ProductsPostgresqlRepository } from "@/database/repositories/postgresql/products-postgresql-repository"
+import { deleteProductImageFromPath } from "@/http/utils/delete-image-on-path"
 import { DeleteProductUseCase } from "@/use-cases/delete-product"
 import { NotAllowedError } from "@/use-cases/errors/not-allowed-error"
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error"
@@ -17,10 +18,12 @@ export async function deleteProduct(request: any, response: Response) {
     const productsRepository = new ProductsPostgresqlRepository()
     const deleteUseCase = new DeleteProductUseCase(productsRepository)
 
-    await deleteUseCase.execute({
+    const { product }: any = await deleteUseCase.execute({
       productId: id,
       ownerId
     })
+    
+    await deleteProductImageFromPath(product.image_url)
 
     return response.status(200).send()
 
