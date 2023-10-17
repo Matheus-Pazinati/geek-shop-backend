@@ -1,5 +1,5 @@
 import { ProductsPostgresqlRepository } from "@/database/repositories/postgresql/products-postgresql-repository"
-import { deleteProductImageFromPath } from "@/http/utils/delete-image-on-path"
+import { multerDeleteProductImageFromPath} from "@/http/utils/multer-delete-image-from-path"
 import { DeleteProductUseCase } from "@/use-cases/delete-product"
 import { NotAllowedError } from "@/use-cases/errors/not-allowed-error"
 import { ResourceNotFoundError } from "@/use-cases/errors/resource-not-found-error"
@@ -23,7 +23,7 @@ export async function deleteProduct(request: any, response: Response) {
       ownerId
     })
     
-    await deleteProductImageFromPath(product.image_url)
+    await multerDeleteProductImageFromPath(product.image_url)
 
     return response.status(200).send()
 

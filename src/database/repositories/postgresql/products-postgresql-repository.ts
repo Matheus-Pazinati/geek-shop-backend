@@ -25,6 +25,20 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
 
     return products[0]
   }
+  async findByName(name: string) {
+    const products = await sql<Product[]>`
+      SELECT
+        *
+      FROM Products
+      WHERE NAME = ${ name }
+    `
+
+    if (!products.length) {
+      return null
+    }
+
+    return products[0]
+  }
   async delete(product: Product) {
     await sql`
       DELETE FROM 

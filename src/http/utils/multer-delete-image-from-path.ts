@@ -1,6 +1,6 @@
 import fs from "fs";
 
-export async function deleteProductImageFromPath(imageUrl: string) {
+export async function multerDeleteProductImageFromPath(imageUrl: string) {
   const imageName = imageUrl.split('uploads/')[1]
   const imagePath = `public/uploads/${imageName}`
 
