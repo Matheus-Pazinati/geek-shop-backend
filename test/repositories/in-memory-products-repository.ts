@@ -68,6 +68,14 @@ export class InMemoryProductsRepository implements ProductsRepository {
     return products
   }
 
+  async fetchByOwner(ownerId: string) {
+    const products = this.products.filter((product) => {
+      return product.ownerId == ownerId
+    })
+
+    return products
+  }
+
   async verifyProductOwner(productId: string, ownerId: string) {
     const product = await this.findById(productId)
 

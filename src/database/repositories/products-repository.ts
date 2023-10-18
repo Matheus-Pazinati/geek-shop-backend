@@ -7,6 +7,7 @@ export interface ProductsRepository {
   delete(product: Product): Promise<void>
   save(product: Product): Promise<void>
   fetchByCategory(category: 'starwars' | 'consoles' | 'generics'): Promise<Product[]>
+  fetchByOwner(ownerId: string): Promise<Product[]>
   fetchAll(): Promise<Product[]>
   verifyProductOwner(productId: string, ownerId: string): Promise<boolean>
 }
