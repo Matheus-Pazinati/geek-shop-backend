@@ -3,7 +3,6 @@ import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import request from 'supertest'
 import { app } from "app";
 import { NextFunction, Response, Request } from "express";
-import sql from "@/database/config-db";
 
 function handleImagesUploadMock(request: Request, response: Response, next: NextFunction) {
   response.locals.image = "test.jpeg"
@@ -66,8 +65,9 @@ describe("Fetch all Products E2E Test", () => {
     .expect(201)
 
     const products = await request(app)
-    .get('/products')
+    .get('/products/all')
     .send()
+    .expect(200)
    
     expect(products.body).toEqual([
       expect.objectContaining({ name: "First product" }),
