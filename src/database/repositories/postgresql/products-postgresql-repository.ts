@@ -4,9 +4,6 @@ import sql from "@/database/config-db";
 import { UUID } from "crypto";
 
 export class ProductsPostgresqlRepository implements ProductsRepository {
-  fetchByOwner(ownerId: string): Promise<Product[]> {
-    throw new Error("Method not implemented.");
-  }
   async create(product: Product) {
     await sql`
       INSERT INTO
@@ -33,6 +30,16 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
       SELECT
         *
       FROM Products
+    `
+
+    return products
+  }
+  async fetchByOwner(ownerId: string) {
+    const products = await sql<Product[]>`
+      SELECT
+        *
+      FROM Products
+      WHERE owner_id = ${ownerId}
     `
 
     return products
