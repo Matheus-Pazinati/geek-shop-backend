@@ -1,12 +1,13 @@
 import { ProductsRepository } from '@/database/repositories/products-repository'
 import { UUID, randomUUID } from 'crypto'
 import { NameAlreadyRegisteredError } from './errors/name-already-registered'
+import { Categories } from '@/database/models/product'
 
 interface AddProductUseCaseRequest {
   name: string
   description: string
   price: number
-  category: 'starwars' | 'consoles' | 'generics'
+  category: Categories
   imageUrl: string
   ownerId: UUID
 }

@@ -1,8 +1,8 @@
+import { NextFunction, Response, Request } from "express";
 import { setupTestSchema, dropTestSchema } from "test/factories/create-db-schema";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import request from 'supertest'
 import { app } from "app";
-import { NextFunction, Response, Request } from "express";
 
 function handleImagesUploadMock(request: Request, response: Response, next: NextFunction) {
   response.locals.image = "test.jpeg"
@@ -15,8 +15,7 @@ vi.mock('../../middlewares/multer-image-update.ts', () => {
   }
 })
 
-describe("Fetch all Products E2E Test", () => {
-  
+describe("Fetch all Products E2E Test", () => {  
   beforeAll(async () => {
     await setupTestSchema('products')
   })

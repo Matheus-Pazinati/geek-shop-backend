@@ -23,6 +23,7 @@ describe("Get a product E2E Test", () => {
 
   afterAll(async() => {
     await dropTestSchema('products')
+    vi.restoreAllMocks()
   })
 
   test("it should be able to get a product", async () => {
@@ -57,7 +58,7 @@ describe("Get a product E2E Test", () => {
     `
 
     const product = await request(app)
-    .get(`/products/${products[0].id}`)
+    .get(`/products/product/${products[0].id}`)
     .send()
     .expect(200)
 
@@ -71,7 +72,7 @@ describe("Get a product E2E Test", () => {
   test("it should not be able to get a nonexistent product", async() => {
     const nonexistentProductId = "550e8400-e29b-41d4-a716-446655440000"
     await request(app)
-    .get(`/products/${nonexistentProductId}`)
+    .get(`/products/product/${nonexistentProductId}`)
     .send()
     .expect(404)
   })

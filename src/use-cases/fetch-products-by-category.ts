@@ -1,8 +1,8 @@
-import { Product } from "@/database/models/product";
+import { Categories, Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
 
 interface FetchProductsByCategoryUseCaseRequest {
-  category: 'starwars' | 'consoles' | 'generics'
+  category: Categories
 }
 
 interface FetchProductsByCategoryUseCaseResponse {

@@ -9,5 +9,5 @@ export async function fetchProducts(request: Request, response: Response) {
 
   const { products } = await fetchProductsUseCase.execute()
 
-  return response.status(200).send(products)
+  return response.status(200).json(products)
 }

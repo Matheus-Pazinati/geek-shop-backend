@@ -19,7 +19,7 @@ export async function getProduct(request: Request, response: Response) {
       id
     })
 
-    return response.status(200).send(product)
+    return response.status(200).json(product)
 
   } catch (error) {
     if (error instanceof ZodError) {

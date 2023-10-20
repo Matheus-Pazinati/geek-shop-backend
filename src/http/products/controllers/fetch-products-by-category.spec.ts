@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { dropTestSchema, setupTestSchema } from "test/factories/create-db-schema";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import request from 'supertest'
-import { app } from "app";
+import { app } from 'app'
 
 function handleImagesUploadMock(request: Request, response: Response, next: NextFunction) {
   response.locals.image = "test.jpeg"
@@ -15,7 +15,7 @@ vi.mock('../../middlewares/multer-image-update.ts', () => {
   }
 })
 
-describe("Fetch all Owner Products Test E2E", () => {
+describe("Fetch all products from a category Test E2E", () => {
   beforeAll(async() => {
     await setupTestSchema('products')
   })
@@ -25,7 +25,7 @@ describe("Fetch all Owner Products Test E2E", () => {
     vi.restoreAllMocks()
   })
 
-  test("it should be able to fetch owner products", async() => {
+  test("it should be able to fetch products by category", async() => {
     await request(app)
     .post('/users')
     .send({
@@ -46,48 +46,36 @@ describe("Fetch all Owner Products Test E2E", () => {
     .post('/products/add')
     .set('Authorization', `Bearer ${token.body}`)
     .send({
-      name: "New product",
+      name: "Starwars Product",
       description: "Lorem ipsum test",
       price: "42",
       category: "starwars"
     })
 
-    // ANOTHER USER
     await request(app)
-    .post('/users')
+    .post('/products/add')
+    .set('Authorization', `Bearer ${token.body}`)
     .send({
-      name: "Pedro Henrique",
-      email: "pedro@example.com",
-      password: "12345678",
-      passwordConfirm: "12345678"
-    })
-
-    const anotherUserToken = await request(app)
-    .post('/authentication')
-    .send({
-      email: "pedro@example.com",
-      password: "12345678"
+      name: "Another Starwars Product",
+      description: "Lorem ipsum test",
+      price: "42",
+      category: "starwars"
     })
 
     await request(app)
     .post('/products/add')
-    .set('Authorization', `Bearer ${anotherUserToken.body}`)
+    .set('Authorization', `Bearer ${token.body}`)
     .send({
-      name: "Another product",
+      name: "Console Product",
       description: "Lorem ipsum test",
-      price: "43",
+      price: "42",
       category: "consoles"
     })
 
     const products = await request(app)
-    .get('/products/owner-products')
-    .set('Authorization', `Bearer ${token.body}`)
+    .get('/products/categories/starwars')
     .send()
-    .expect(200)
 
-    expect(products.body).toHaveLength(1)
-    expect(products.body).toEqual([
-      expect.objectContaining({ name: 'New product' })
-    ])
+    expect(products.body).toHaveLength(2)
   })
 })

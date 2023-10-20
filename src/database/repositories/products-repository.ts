@@ -1,4 +1,4 @@
-import { Product } from '../models/product'
+import { Categories, Product } from '../models/product'
 
 export interface ProductsRepository {
   create(product: Product): Promise<void>
@@ -6,7 +6,7 @@ export interface ProductsRepository {
   findByName(name: string): Promise<Product | null>
   delete(product: Product): Promise<void>
   save(product: Product): Promise<void>
-  fetchByCategory(category: 'starwars' | 'consoles' | 'generics'): Promise<Product[]>
+  fetchByCategory(category: Categories): Promise<Product[]>
   fetchByOwner(ownerId: string): Promise<Product[]>
   fetchAll(): Promise<Product[]>
   verifyProductOwner(productId: string, ownerId: string): Promise<boolean>

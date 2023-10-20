@@ -1,7 +1,6 @@
-import { Product } from "@/database/models/product";
+import { Categories, Product } from "@/database/models/product";
 import { ProductsRepository } from "../products-repository";
 import sql from "@/database/config-db";
-import { UUID } from "crypto";
 
 export class ProductsPostgresqlRepository implements ProductsRepository {
   async create(product: Product) {
@@ -16,7 +15,7 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
       SELECT 
         *
       FROM Products
-      WHERE id = ${ id }
+        WHERE id = ${ id }
     `
 
     if (!products.length) {
@@ -39,7 +38,7 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
       SELECT
         *
       FROM Products
-      WHERE owner_id = ${ownerId}
+        WHERE owner_id = ${ownerId}
     `
 
     return products
@@ -49,7 +48,7 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
       SELECT
         *
       FROM Products
-      WHERE NAME = ${ name }
+        WHERE NAME = ${ name }
     `
 
     if (!products.length) {
@@ -58,6 +57,7 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
 
     return products[0]
   }
+
   async delete(product: Product) {
     await sql`
       DELETE FROM 
@@ -65,13 +65,23 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
           WHERE id = ${ product.id! }
     `
   }
+
   save(product: Product): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  fetchByCategory(category: "starwars" | "consoles" | "generics"): Promise<Product[]> {
-    throw new Error("Method not implemented.");
+
+  async fetchByCategory(category: Categories) {
+    const products = await sql<Product[]>`
+      SELECT
+        *
+      FROM Products
+        WHERE product_category = ${ category }
+    `
+
+    return products
   }
-  async verifyProductOwner(productId: UUID, ownerId: UUID) {
+
+  async verifyProductOwner(productId: string, ownerId: string) {
     const product: any = await this.findById(productId)
     
     if (product.owner_id == ownerId) {

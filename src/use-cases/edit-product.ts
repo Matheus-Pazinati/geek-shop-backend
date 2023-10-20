@@ -10,7 +10,7 @@ export class EditProductUseCase {
   constructor(private productsRepository: ProductsRepository) {}
 
   async execute({ newProductData }: EditProductUseCaseRequest) {
-    const product = await this.productsRepository.findById(newProductData.id)
+    const product = await this.productsRepository.findById(newProductData.id!)
 
     if (!product) {
       throw new ResourceNotFoundError()

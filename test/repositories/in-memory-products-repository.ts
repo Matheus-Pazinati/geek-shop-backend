@@ -1,4 +1,4 @@
-import { Product } from "@/database/models/product";
+import { Categories, Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
 import { randomUUID } from "node:crypto";
 
@@ -60,7 +60,7 @@ export class InMemoryProductsRepository implements ProductsRepository {
     this.products[productIndex] = product
   }
 
-  async fetchByCategory(category: "starwars" | "consoles" | "generics") {
+  async fetchByCategory(category: Categories) {
     const products = this.products.filter((product) => {
       return product.category === category
     })

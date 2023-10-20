@@ -17,7 +17,7 @@ describe('Add Product Test', () => {
     await addProduct.execute({
       name: 'product-example',
       description: 'example of a product',
-      category: 'generics',
+      category: "consoles",
       imageUrl: 'http://example.com',
       price: 12.99,
       ownerId: "6801dfcc-6aa3-11ee-8c99-0242ac120002"

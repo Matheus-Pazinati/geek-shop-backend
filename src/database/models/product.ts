@@ -1,11 +1,15 @@
 import { UUID } from "node:crypto"
 
+export const CATEGORIES = ["starwars", "consoles", "generics"] as const;
+
+export type Categories = "starwars" | "consoles" | "generics"
+
 export interface Product {
-  id?: UUID
+  id?: string
   name: string
   description: string
   price: number
-  category: 'starwars' | 'consoles' | 'generics'
+  category: Categories
   imageUrl: string
   ownerId: UUID
 }

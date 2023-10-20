@@ -23,6 +23,7 @@ describe("Delete a product E2E Test", () => {
 
   afterAll(async() => {
     await dropTestSchema('products')
+    vi.restoreAllMocks()
   })
 
   test("it should be able to delete a product", async() => {

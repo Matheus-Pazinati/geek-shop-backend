@@ -8,12 +8,12 @@ import { ZodError, z } from "zod"
 
 export async function deleteProduct(request: any, response: Response) {
   const deleteProductSchema = z.object({
-    id: z.string().uuid().nonempty()
+    id: z.string().nonempty()
   })
 
   try {
     const { id } = deleteProductSchema.parse(request.params)
-    const ownerId = request.user.id
+    const ownerId = await request.user.id
 
     const productsRepository = new ProductsPostgresqlRepository()
     const deleteUseCase = new DeleteProductUseCase(productsRepository)

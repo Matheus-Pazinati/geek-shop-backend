@@ -6,7 +6,7 @@ import { Product } from '@/database/models/product'
 
 interface DeleteProductUseCaseRequest {
   productId: string
-  ownerId: UUID
+  ownerId: string
 }
 
 interface DeleteProductUseCaseResponse {
