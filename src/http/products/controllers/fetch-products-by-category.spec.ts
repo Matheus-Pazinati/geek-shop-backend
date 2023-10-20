@@ -78,4 +78,11 @@ describe("Fetch all products from a category Test E2E", () => {
 
     expect(products.body).toHaveLength(2)
   })
+
+  test("it should not be able to fetch products with a nonexistent category", async() => {
+    const products = await request(app)
+    .get('/products/categories/invalid-category')
+    .send()
+    .expect(400)
+  })
 })
