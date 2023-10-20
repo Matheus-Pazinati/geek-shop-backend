@@ -46,32 +46,47 @@ describe("Fetch all Products E2E Test", () => {
     .post('/products/add')
     .set('Authorization', `Bearer ${token.body}`)
     .send({
-      name: "First product",
+      name: "First user product",
       description: "Lorem ipsum test",
       price: "42",
       category: "starwars"
     })
-    .expect(201)
+
+    await request(app)
+    .post('/users')
+    .send({
+      name: "Pedro Henrique",
+      email: "pedro@example.com",
+      password: "12345678",
+      passwordConfirm: "12345678"
+    })
+
+    const anotherUserToken = await request(app)
+    .post('/authentication')
+    .send({
+      email: "pedro@example.com",
+      password: "12345678"
+    })
 
     await request(app)
     .post('/products/add')
-    .set('Authorization', `Bearer ${token.body}`)
+    .set('Authorization', `Bearer ${anotherUserToken.body}`)
     .send({
-      name: "Second product",
+      name: "Second user product",
       description: "Lorem ipsum test",
       price: "32",
       category: "generics"
     })
-    .expect(201)
 
     const products = await request(app)
     .get('/products/all')
     .send()
     .expect(200)
    
+    expect(products.body).toHaveLength(2)
     expect(products.body).toEqual([
-      expect.objectContaining({ name: "First product" }),
-      expect.objectContaining({ name: "Second product" })
+      expect.objectContaining({ name: "First user product" }),
+      expect.objectContaining({ name: "Second user product" })
     ])
   })
 })
