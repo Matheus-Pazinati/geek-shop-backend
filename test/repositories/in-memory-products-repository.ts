@@ -1,5 +1,6 @@
 import { Categories, Product } from "@/database/models/product";
 import { ProductsRepository } from "@/database/repositories/products-repository";
+import { NewProductData } from "@/use-cases/edit-product";
 import { randomUUID } from "node:crypto";
 
 export class InMemoryProductsRepository implements ProductsRepository {
@@ -52,12 +53,20 @@ export class InMemoryProductsRepository implements ProductsRepository {
     this.products.splice(productToRemoveIndex, 1) 
   }
 
-  async save(product: Product) {
+  async save(product: NewProductData, productId: string) {
     const productIndex = this.products.findIndex((item) => {
-      return item.id === product.id
+      return item.id === productId
     })
 
-    this.products[productIndex] = product
+    this.products[productIndex] = {
+      id: productId,
+      name: product.name ? product.name : this.products[productIndex].name,
+      description: product.description ? product.description : this.products[productIndex].description,
+      price: product.price ? product.price : this.products[productIndex].price,
+      category: product.product_category ? product.product_category : this.products[productIndex].category,
+      imageUrl: product.image_url ? product.image_url : this.products[productIndex].imageUrl,
+      ownerId: product.owner_id ? product.owner_id : this.products[productIndex].ownerId,
+    }
   }
 
   async fetchByCategory(category: Categories) {

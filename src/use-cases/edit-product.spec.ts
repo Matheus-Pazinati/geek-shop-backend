@@ -18,21 +18,33 @@ describe('Edit a Product Test', () => {
     const product = await makeProduct({
       name: 'old-name',
       price: 8,
+      category: 'generics',
+      description: 'lorem ipsum id',
+      imageUrl: "localhost/image.png",
+      ownerId: "300def3d-2039-4fde-87e5-7d61a8459e93"
     })
 
     inMemoryProductsRepository.create(product)
 
     await editProduct.execute({
       newProductData: {
-        ...product,
         name: 'new-name',
         price: 10,
       },
-      ownerId: product.ownerId
+      ownerId: product.ownerId,
+      productId: product.id!
     })
 
     expect(inMemoryProductsRepository.products[0]).toEqual(
-      expect.objectContaining({ name: 'new-name', price: 10 }),
+      expect.objectContaining(
+        { name: 'new-name',
+          price: 10 ,
+          category: product.category,
+          description: product.description,
+          imageUrl: product.imageUrl,
+          ownerId: product.ownerId
+        }
+      ),
     )
   })
 
@@ -40,15 +52,15 @@ describe('Edit a Product Test', () => {
     expect(async() => {
       await editProduct.execute({
         newProductData: {
-          id: 'nonexistent-id',
           name: 'nonexistent-name',
           price: 1,
-          category: 'generics',
+          product_category: 'generics',
           description: 'fake-description',
-          imageUrl: 'fake-url',
-          ownerId: '1aea40ac-6f8b-11ee-b962-0242ac120002'
+          image_url: 'fake-url',
+          owner_id: '1aea40ac-6f8b-11ee-b962-0242ac120002'
         },
-        ownerId: '1aea40ac-6f8b-11ee-b962-0242ac120002'
+        ownerId: '1aea40ac-6f8b-11ee-b962-0242ac120002',
+        productId: 'nonexistent-id'
       })
     }).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
@@ -66,10 +78,10 @@ describe('Edit a Product Test', () => {
     expect(async() => {
       await editProduct.execute({
         newProductData: {
-          ...product,
           name: 'new-product'
         },
-        ownerId: anotherOwnerId
+        ownerId: anotherOwnerId,
+        productId: product.id!
       })
     }).rejects.toBeInstanceOf(NotAllowedError)
   })
