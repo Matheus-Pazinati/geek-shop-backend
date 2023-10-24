@@ -25,7 +25,7 @@ const upload = multer({
   limits:{
       fileSize: 1024 * 1024
   }
-}).single('product-image')
+}).single('product_image')
 
 export async function handleImagesUploadWithMulter(request: Request, response: Response, next: NextFunction) {
   upload(request, response, (err) => {
@@ -39,7 +39,13 @@ export async function handleImagesUploadWithMulter(request: Request, response: R
       })
     }
 
-    response.locals.image = `http://localhost:3000/uploads/${request.file?.filename}`
-    next()
+    if (request.file != undefined) {
+      response.locals.image = `http://localhost:3000/uploads/${request.file?.filename}`
+      next()
+    } else {
+      response.locals.image = null
+      next()
+    }
+
   })
 }

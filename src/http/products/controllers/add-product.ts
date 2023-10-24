@@ -14,12 +14,18 @@ export async function addProduct(request: any, response: Response) {
     category: z.enum(CATEGORIES)
   })
 
+  const imageUrl = await response.locals.image
+
+  if (!imageUrl) {
+    return response.status(404).send({
+      message: "You must send an imagem for the product."
+    })
+  }
+
   try {
     const { name, price, description, category } = productSchema.parse(request.body)
 
     const priceInCents = convertRealToCents(price)
-  
-    const imageUrl = await response.locals.image
     
     const productsRepository = new ProductsPostgresqlRepository()
     const createProduct = new AddProductUseCase(productsRepository)
