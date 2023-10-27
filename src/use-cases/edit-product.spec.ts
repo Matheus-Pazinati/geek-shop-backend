@@ -57,7 +57,6 @@ describe('Edit a Product Test', () => {
           product_category: 'generics',
           description: 'fake-description',
           image_url: 'fake-url',
-          owner_id: '1aea40ac-6f8b-11ee-b962-0242ac120002'
         },
         ownerId: '1aea40ac-6f8b-11ee-b962-0242ac120002',
         productId: 'nonexistent-id'

@@ -7,6 +7,7 @@ import { getProduct } from './controllers/get-product'
 import { deleteProduct } from './controllers/delete-product'
 import { fetchProducts } from './controllers/fetch-products'
 import { fetchOwnerProducts } from './controllers/fetch-owner-products'
+import { editProduct } from './controllers/edit-product'
 
 export const productsRouter = express.Router()
 
@@ -16,3 +17,4 @@ productsRouter.get('/all', fetchProducts)
 productsRouter.get('/categories/:category', fetchProductsByCategory)
 productsRouter.get('/product/:id', getProduct)
 productsRouter.delete('/:id', validateJWT, deleteProduct)
+productsRouter.patch('/product/:productId', validateJWT, handleImagesUploadWithMulter, editProduct)

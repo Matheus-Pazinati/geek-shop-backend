@@ -9,7 +9,6 @@ export interface NewProductData {
   price?: number
   product_category?: Categories
   image_url?: string
-  owner_id?: string
 }
 
 interface EditProductUseCaseRequest {

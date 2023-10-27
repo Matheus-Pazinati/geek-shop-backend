@@ -1,6 +1,7 @@
 import { Categories, Product } from "@/database/models/product";
 import { ProductsRepository } from "../products-repository";
 import sql from "@/database/config-db";
+import { NewProductData } from "@/use-cases/edit-product";
 
 export class ProductsPostgresqlRepository implements ProductsRepository {
   async create(product: Product) {
@@ -66,8 +67,15 @@ export class ProductsPostgresqlRepository implements ProductsRepository {
     `
   }
 
-  save(product: Product): Promise<void> {
-    throw new Error("Method not implemented.");
+  async save(product: any, productId: string) {
+    const updatedFields = Object.keys(product)
+
+    await sql`
+      UPDATE Products SET ${
+        sql(product, updatedFields)
+      }
+      WHERE id = ${ productId }
+    `
   }
 
   async fetchByCategory(category: Categories) {

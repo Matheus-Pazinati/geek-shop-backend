@@ -65,7 +65,7 @@ export class InMemoryProductsRepository implements ProductsRepository {
       price: product.price ? product.price : this.products[productIndex].price,
       category: product.product_category ? product.product_category : this.products[productIndex].category,
       imageUrl: product.image_url ? product.image_url : this.products[productIndex].imageUrl,
-      ownerId: product.owner_id ? product.owner_id : this.products[productIndex].ownerId,
+      ownerId: this.products[productIndex].ownerId
     }
   }
 
