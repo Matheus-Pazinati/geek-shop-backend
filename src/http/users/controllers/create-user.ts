@@ -35,7 +35,8 @@ export async function createUser(request: Request, response: Response) {
     }
     if (error instanceof EmailAlreadyRegisteredError) {
       return response.status(409).send({
-        message: error.message
+        message: error.message,
+        path: 'email'
       })
     }
   }

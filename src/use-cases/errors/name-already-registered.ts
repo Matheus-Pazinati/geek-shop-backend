@@ -1,5 +1,5 @@
 export class NameAlreadyRegisteredError extends Error {
   constructor() {
-    super("Name already registered.")
+    super("Nome do produto já cadastrado.")
   }
 }
