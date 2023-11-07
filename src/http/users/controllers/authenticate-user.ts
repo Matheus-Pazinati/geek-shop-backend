@@ -25,7 +25,11 @@ export async function authenticateUser(request: Request, response: Response) {
 
     if (id) {
       const accessToken = generateAcessToken({ id, name })
-      return response.status(200).json(accessToken)
+      return response.cookie('token', accessToken, { maxAge: 259200, httpOnly: true, secure: false })
+      .json({
+        auth: true
+      })
+      .status(200)
     }
   } catch (error) {
     if (error instanceof ZodError) {
@@ -36,7 +40,8 @@ export async function authenticateUser(request: Request, response: Response) {
 
     if (error instanceof InvalidCredentialsError) {
       return response.status(401).send({
-        message: error.message
+        message: error.message,
+        path: 'email'
       })
     }
   }

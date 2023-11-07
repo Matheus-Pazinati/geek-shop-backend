@@ -1,10 +1,9 @@
-import { NextFunction, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
 export async function validateJWT(request: any, response: Response, next: NextFunction) {
-  const authHeader = request.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  const token = request.cookies.token
 
   if (token == null) {
     return response.status(401).end()
